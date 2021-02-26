@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SendIcon from "@material-ui/icons/Send";
 
-function ChatInput() {
+function ChatInput({ sendMessage }) {
+  const [input, setInput] = useState();
+  const send = (e) => {
+    e.preventDefault();
+    if (!input) return;
+    sendMessage(input);
+    setInput("");
+  };
+
+  //add onSubmit and remove onclick from sendButton and convert it in a button
   return (
     <Container>
       <InputContainer>
-        <form>
-          <input type="text" placeholder="Message here..." />
+        <form onSubmit={send}>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            value={input}
+            placeholder="Message here..."
+          />
           <SendButton>
             <Send />
           </SendButton>
@@ -47,7 +61,7 @@ const InputContainer = styled.div`
     }
   }
 `;
-const SendButton = styled.div`
+const SendButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,6 +69,7 @@ const SendButton = styled.div`
   height: 32px;
   margin-right: 5px;
   border-radius: 2px;
+  border: none;
   cursor: pointer;
   .MuiSvgIcon-root {
     width: 18px;
